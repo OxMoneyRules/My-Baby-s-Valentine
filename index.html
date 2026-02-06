@@ -5,102 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Baby ❤️</title>
     <style>
-        :root {
-            --neon-red: #ff0000;
-            --dark-red: #8b0000;
-        }
         body { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100vh; margin: 0; background: radial-gradient(circle, #1a0000 0%, #000000 100%); 
-            color: var(--neon-red); font-family: 'Georgia', serif; overflow: hidden; text-align: center; padding: 20px; 
+            height: 100vh; margin: 0; 
+            background: #fff5f5; /* Soft Cream/Pink */
+            color: #d63384; font-family: 'Playfair Display', serif; overflow: hidden; text-align: center; padding: 20px; 
         }
-        #heartCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        #heartCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.6; }
         
-        .container { max-width: 600px; z-index: 10; }
+        .container { max-width: 600px; z-index: 10; background: rgba(255, 255, 255, 0.8); padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1); }
         
-        h1 { 
-            font-size: 2.5rem; 
-            background: linear-gradient(to bottom, #ff4d4d, #b30000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            margin-bottom: 20px;
-        }
-        
-        p { font-size: 1.4rem; line-height: 1.6; color: #ff9999; text-shadow: 0 0 5px black; }
+        h1 { font-size: 2.2rem; color: #c2185b; margin-bottom: 20px; font-weight: 700; }
+        p { font-size: 1.2rem; line-height: 1.6; color: #ad1457; }
 
-        .buttons { display: flex; gap: 20px; align-items: center; justify-content: center; margin-top: 30px; min-height: 150px; }
+        .buttons { 
+            display: flex; gap: 15px; align-items: center; justify-content: center; 
+            margin-top: 30px; position: relative; width: 100%; min-height: 80px;
+        }
         
         button { 
-            padding: 18px 35px; font-size: 1.3rem; border: 2px solid var(--neon-red); border-radius: 50px; 
-            cursor: pointer; background: rgba(0,0,0,0.8); color: var(--neon-red); font-weight: bold; 
-            box-shadow: 0 0 15px var(--dark-red); transition: all 0.3s ease; 
+            padding: 12px 30px; font-size: 1.1rem; border: none; border-radius: 15px; 
+            cursor: pointer; font-weight: bold; transition: all 0.2s ease;
         }
         
-        button:hover { 
-            background: var(--neon-red); color: #000000; box-shadow: 0 0 30px var(--neon-red); 
-            transform: translateY(-5px);
-        }
-
-        #yesBtn { z-index: 1000; position: relative; }
-        #noBtn { position: absolute; z-index: 999; white-space: nowrap; }
+        #yesBtn { background: #ff4d6d; color: white; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3); z-index: 1000; }
+        #noBtn { background: #f8bbd0; color: #ad1457; position: relative; z-index: 999; }
 
         .hidden { display: none; }
-        .emoji { font-size: 4rem; filter: drop-shadow(0 0 15px red); margin-bottom: 15px; animation: pulse 2s infinite; }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* Shake animation for the No button */
-        .shake { animation: shake 0.2s ease-in-out; }
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(5px); }
-            50% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-            100% { transform: translateX(0); }
-        }
+        .emoji { font-size: 3.5rem; margin-bottom: 10px; }
     </style>
 </head>
 <body>
     <canvas id="heartCanvas"></canvas>
     <div class="container">
         <div id="step1">
-            <div class="emoji">❤️</div>
+            <div class="emoji">🌸</div>
             <h1>Hi My Babbyy…</h1>
-            <button onclick="nextStep(2)">Continue ✨</button>
+            <button id="yesBtn" onclick="nextStep(2)">Continue ✨</button>
         </div>
         <div id="step2" class="hidden">
-            <div class="emoji">🥰</div>
+            <div class="emoji">💖</div>
             <h1>Hiii My Baby Girl</h1>
-            <button onclick="nextStep(3)">Continue 🌹</button>
+            <button id="yesBtn" onclick="nextStep(3)">Next 🌹</button>
         </div>
         <div id="step3" class="hidden">
-            <div class="emoji">🔥</div>
+            <div class="emoji">🎀</div>
             <h1>Hiii My Sexy Prettiest Baby Girl</h1>
-            <button onclick="nextStep(4)">Continue ❤️‍🔥</button>
+            <button id="yesBtn" onclick="nextStep(4)">Almost there... ❤️</button>
         </div>
         <div id="step4" class="hidden">
-            <div class="emoji">🌙</div>
+            <div class="emoji">🧸</div>
             <h1 id="greeting">Good Morning!</h1>
-            <button onclick="nextStep(5)">Continue 💌</button>
+            <button id="yesBtn" onclick="nextStep(5)">Open Letter 💌</button>
         </div>
 
         <div id="final-step" class="hidden">
             <p>Every moment with you feels like a dream I never want to wake up from. You make everything brighter, and honestly, I can't imagine my world without you.</p>
-            <h1>Will you be my Valentine?🌹</h1>
+            <h1>Will you be my Valentine? 🌹</h1>
             <div class="buttons">
-                <button id="yesBtn">YES</button>
+                <button id="yesBtn">Yes</button>
                 <button id="noBtn">No</button>
             </div>
         </div>
 
         <div id="success-screen" class="hidden">
-            <div class="emoji">💍</div>
-            <h1 style="background: linear-gradient(to bottom, #fff, #ff0000); -webkit-background-clip: text;">YAY! ❤️<br>See you on the 14th, My Queen!</h1>
+            <div class="emoji">💍💖✨</div>
+            <h1>YAY! ❤️<br>I can't wait to see you on the 14th!</h1>
         </div>
     </div>
 
@@ -109,41 +79,37 @@
         document.getElementById('greeting').innerText = hours < 12 ? "Good Morning! ☀️" : hours < 17 ? "Good Afternoon! ☕" : "Good Evening! 🌙";
 
         function nextStep(step) {
-            document.getElementById(`step${step-1}`).classList.add('hidden');
+            document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
             document.getElementById(step === 5 ? 'final-step' : `step${step}`).classList.remove('hidden');
         }
 
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.querySelector('#final-step #yesBtn');
+        const noBtn = document.querySelector('#final-step #noBtn');
         let scale = 1;
+        let noMessages = ["No", "Are you sure?", "Really??", "Think again!", "Pwease🥺", "Don't do this!", "Click Yes!", "I'm crying..."];
         let noCount = 0;
 
-        const noMessages = [
-            "No", "Really sure?", "Are you positive?", "Pwease??🥺", 
-            "Think again!", "Last chance!", "Surely not?", 
-            "I'll be sad... 💔", "You're mean! 😂", "JUST CLICK YES!"
-        ];
-
         const handleNo = () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            // Move No button away
+            noBtn.style.position = "absolute";
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
 
-            noBtn.classList.add('shake');
-            setTimeout(() => noBtn.classList.remove('shake'), 200);
+            // Change No text
+            noBtn.innerText = noMessages[Math.min(noCount++, noMessages.length - 1)];
 
-            noBtn.innerText = noMessages[Math.min(noCount, noMessages.length - 1)];
-            noCount++;
-
-            scale += 0.7;
+            // Grow Yes button
+            scale += 0.8;
             yesBtn.style.transform = `scale(${scale})`;
 
-            if (scale > 14) {
+            // Cover screen
+            if (scale > 15) {
                 Object.assign(yesBtn.style, {
                     position:"fixed", inset:"0", width:"100%", height:"100%", 
                     borderRadius:"0", display:"flex", alignItems:"center", 
-                    justifyContent:"center", fontSize:"5rem", background:"red", color:"black"
+                    justifyContent:"center", fontSize:"3rem", background:"#ff4d6d"
                 });
                 yesBtn.innerText = "YES! ❤️";
             }
@@ -158,19 +124,19 @@
             document.getElementById('success-screen').classList.remove('hidden');
         });
 
-        // Floating Hearts Background
+        // Floating Hearts
         const canvas = document.getElementById('heartCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const hearts = [];
         function drawHeart(h) {
-            ctx.fillStyle = `rgba(255, 0, 0, ${h.o})`; ctx.beginPath();
+            ctx.fillStyle = `rgba(255, 77, 109, ${h.o})`; ctx.beginPath();
             ctx.moveTo(h.x, h.y); ctx.bezierCurveTo(h.x-h.s/2, h.y-h.s/2, h.x-h.s, h.y+h.s/3, h.x, h.y+h.s);
             ctx.bezierCurveTo(h.x+h.s, h.y+h.s/3, h.x+h.s/2, h.y-h.s/2, h.x, h.y); ctx.fill();
         }
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            if (hearts.length < 80) hearts.push({x:Math.random()*canvas.width, y:canvas.height+20, s:Math.random()*20+5, sp:Math.random()*3+1, o:Math.random()*0.6+0.2});
+            if (hearts.length < 50) hearts.push({x:Math.random()*canvas.width, y:canvas.height+20, s:Math.random()*15+5, sp:Math.random()*2+1, o:Math.random()*0.4+0.1});
             hearts.forEach((h, i) => { h.y -= h.sp; drawHeart(h); if (h.y < -20) hearts.splice(i, 1); });
             requestAnimationFrame(animate);
         }
