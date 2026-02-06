@@ -3,167 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Baby ❤️</title>
+    <title>For My Little Witch 🖤</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root { --vamp-red: #8b0000; --neon-red: #ff0000; --magic-glow: rgba(255, 0, 0, 0.6); }
         body { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100vh; margin: 0; 
-            background: linear-gradient(135deg, #fce4ec 0%, #ffebee 100%);
-            color: #880e4f; font-family: 'Quicksand', sans-serif; overflow: hidden; text-align: center; 
+            height: 100vh; margin: 0; background: radial-gradient(circle at center, #1a0000 0%, #000000 100%); 
+            color: var(--neon-red); font-family: 'Georgia', serif; overflow: hidden; text-align: center; padding: 20px; 
         }
-        
-        /* Glassmorphism Card */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .container { 
-            max-width: 90%; width: 400px; z-index: 10; 
-            background: rgba(255, 255, 255, 0.4); 
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            padding: 40px 20px; border-radius: 30px; 
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            max-width: 500px; z-index: 10; background: rgba(0, 0, 0, 0.7); 
+            padding: 40px; border-radius: 30px; border: 1px solid var(--vamp-red);
+            box-shadow: 0 0 30px var(--magic-glow); backdrop-filter: blur(5px);
+            animation: float 4s ease-in-out infinite;
         }
-
-        h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; line-height: 1.4; }
-        p { font-size: 1.1rem; line-height: 1.6; font-weight: 500; }
-
-        .buttons { 
-            display: flex; gap: 15px; align-items: center; justify-content: center; 
-            margin-top: 30px; position: relative; height: 120px;
-        }
-        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        h1 { font-size: 2rem; color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+        .buttons { display: flex; gap: 20px; align-items: center; justify-content: center; margin-top: 30px; position: relative; height: 100px; }
         button { 
-            padding: 14px 28px; font-size: 1rem; border: none; border-radius: 20px; 
-            cursor: pointer; font-weight: 700; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+            padding: 12px 25px; font-size: 1.1rem; border: 2px solid var(--vamp-red); 
+            border-radius: 15px; cursor: pointer; background: black; color: var(--neon-red); 
+            box-shadow: 0 0 10px var(--vamp-red); transition: 0.2s;
         }
-        
-        #yesBtn { background: #ff4d6d; color: white; z-index: 1000; }
-        #noBtn { background: white; color: #ff4d6d; position: relative; }
-
+        button:hover { background: var(--neon-red); color: black; box-shadow: 0 0 20px var(--neon-red); }
+        #noBtn { position: relative; transition: 0.2s; }
         .hidden { display: none; }
-        .emoji { font-size: 3.5rem; margin-bottom: 15px; display: block; }
-
-        /* Smooth Gift Box */
-        #gift-box { font-size: 5rem; cursor: pointer; display: inline-block; transition: 0.3s; }
-        #gift-box:active { transform: scale(0.9); }
-
-        #giant-kiss { 
-            font-size: 12rem; position: fixed; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%) scale(0); 
-            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
-            z-index: 2000; pointer-events: none;
-        }
-        #giant-kiss.show { transform: translate(-50%, -50%) scale(1); }
-
-        /* Floating Background Shapes */
-        .shape { position: absolute; background: rgba(255, 77, 109, 0.1); border-radius: 50%; z-index: 1; animation: float 10s infinite; }
-        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0); } }
+        .emoji { font-size: 3rem; filter: drop-shadow(0 0 10px red); }
+        #gift-box { font-size: 6rem; cursor: pointer; animation: magic-shake 1.5s infinite; filter: drop-shadow(0 0 20px var(--neon-red)); }
+        @keyframes magic-shake { 0%, 100% { transform: scale(1) rotate(0deg); } 20% { transform: scale(1.1) rotate(5deg); } 40% { transform: scale(1.1) rotate(-5deg); } }
+        #giant-kiss { font-size: 12rem; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); transition: 0.8s; z-index: 2000; }
+        #giant-kiss.show { transform: translate(-50%, -50%) scale(1.5); }
+        /* Hidden Music Player */
+        #music-container { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
     </style>
 </head>
 <body>
-    <div class="shape" style="width: 200px; height: 200px; top: -50px; left: -50px;"></div>
-    <div class="shape" style="width: 150px; height: 150px; bottom: -30px; right: -20px; animation-delay: 2s;"></div>
+    <canvas id="bg-canvas"></canvas>
+    
+    <div id="music-container">
+        <div id="player"></div>
+    </div>
 
-    <div class="container" id="main-card">
+    <div class="container">
         <div id="step1">
-            <span class="emoji">✨</span>
+            <div class="emoji">🔮</div>
             <h1>Hi My Babbyy… ❤️</h1>
-            <button onclick="nextStep(2)">Continue</button>
+            <button onclick="startExperience()">Begin Magic ✨</button>
         </div>
-        
         <div id="step2" class="hidden">
-            <span class="emoji">🎀</span>
-            <h1>Hiii My Baby Girl 🥰</h1>
-            <button onclick="nextStep(3)">Next</button>
+            <div class="emoji">🧛‍♀️</div>
+            <h1>Hiii My Baby Girl</h1>
+            <button onclick="nextStep(3)">Next 🌙</button>
         </div>
-
         <div id="step3" class="hidden">
-            <span class="emoji">🌸</span>
-            <h1>Hiii My Sexy Prettiest Baby Girl 🔥</h1>
-            <button onclick="nextStep(4)">Almost there...</button>
+            <div class="emoji">🕯️</div>
+            <h1>Hiii My Sexy Prettiest Baby Girl</h1>
+            <button onclick="nextStep(4)">Stay spellbound... 🔥</button>
         </div>
-
         <div id="step4" class="hidden">
-            <span class="emoji">💌</span>
+            <div class="emoji">🌹</div>
             <h1 id="greeting">Good Morning!</h1>
-            <button onclick="nextStep(5)">Open Letter</button>
+            <button onclick="nextStep(5)">Read my soul 💌</button>
         </div>
-
         <div id="final-step" class="hidden">
-            <p>Every moment with you feels like a dream I never want to wake up from. Will you be my Valentine? 🌹</p>
+            <p>Every moment with you feels like a dream I never want to wake up from. Will you be my Valentine? 🥀</p>
             <div class="buttons">
                 <button id="yesBtn">Yes</button>
                 <button id="noBtn">No</button>
             </div>
         </div>
-
         <div id="success-screen" class="hidden">
-            <h1 id="success-text">YAY! ❤️</h1>
+            <h1>YOU'RE MINE. ❤️</h1>
             <div id="gift-box" onclick="revealKiss()">🎁</div>
-            <p id="tap-instruction" style="font-size: 0.9rem; opacity: 0.7;">Tap your gift!</p>
+            <p style="color: var(--neon-red); margin-top: 20px;">Open your gift, little witch...</p>
         </div>
-
         <div id="final-message" class="hidden">
-            <p style="font-size: 1.2rem; font-weight: 700;">I love you so much,<br>I’m sorry about yesterday’s night. ❤️</p>
+            <h1>I love you so much,<br>I’m sorry about yesterday’s night. 🦇🖤</h1>
         </div>
     </div>
 
     <div id="giant-kiss">😘</div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0', width: '0',
+                videoId: 'uS_319_N97k', // YouTube ID for Fireboy DML - Like You
+                playerVars: { 'autoplay': 0, 'controls': 0, 'showinfo': 0, 'rel': 0 },
+                events: { 'onReady': onPlayerReady }
+            });
+        }
+        function onPlayerReady(event) { console.log("Music Ready"); }
+
+        function startExperience() {
+            if(player) player.playVideo(); // Start song on first click
+            nextStep(2);
+        }
+
         function nextStep(step) {
             document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
             document.getElementById(step === 5 ? 'final-step' : `step${step}`).classList.remove('hidden');
         }
 
+        // Particle background
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const particles = [];
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if(particles.length < 100) particles.push({x:Math.random()*canvas.width, y:canvas.height+10, s:Math.random()*3+1, sp:Math.random()*2+0.5, o:Math.random()*0.5+0.2});
+            particles.forEach((p, i) => { p.y -= p.sp; ctx.fillStyle = `rgba(255, 0, 0, ${p.o})`; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill(); if(p.y < -10) particles.splice(i, 1); });
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        // Button Chase
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         let scale = 1;
-
         const handleNo = () => {
             noBtn.style.position = "absolute";
-            // Keeps it within the card/viewport better
-            const x = Math.random() * (window.innerWidth * 0.5) - (window.innerWidth * 0.25);
-            const y = Math.random() * (window.innerHeight * 0.5) - (window.innerHeight * 0.25);
-            noBtn.style.transform = `translate(${x}px, ${y}px)`;
-            
-            scale += 0.8;
+            noBtn.style.transform = `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px)`;
+            scale += 1.2;
             yesBtn.style.transform = `scale(${scale})`;
-
-            if (scale > 10) {
-                Object.assign(yesBtn.style, { 
-                    position:"fixed", inset:"0", width:"100%", height:"100%", borderRadius:"0", 
-                    display:"flex", alignItems:"center", justifyContent:"center", 
-                    fontSize:"3rem", background:"#ff4d6d", zIndex: "5000"
-                });
-                yesBtn.innerText = "YES! ❤️";
-            }
+            if (scale > 10) { Object.assign(yesBtn.style, { position:"fixed", inset:"0", zIndex:"9999", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"4rem", background:"#8b0000", color:"white" }); yesBtn.innerText = "YES! ❤️"; }
         };
-
         noBtn.addEventListener('mouseover', handleNo);
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleNo(); });
 
         yesBtn.addEventListener('click', () => {
             document.getElementById('final-step').classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff8fa3', '#ffffff'] });
+            confetti({ particleCount: 200, spread: 90, colors: ['#8b0000', '#ff0000'] });
         });
 
         function revealKiss() {
             const kiss = document.getElementById('giant-kiss');
             kiss.classList.add('show');
             document.getElementById('success-screen').classList.add('hidden');
-
-            setTimeout(() => {
-                kiss.classList.remove('show');
-                setTimeout(() => {
-                    document.getElementById('final-message').classList.remove('hidden');
-                }, 400);
-            }, 2000);
+            setTimeout(() => { kiss.classList.remove('show'); document.getElementById('final-message').classList.remove('hidden'); }, 2000);
         }
-        
+
         const hours = new Date().getHours();
         document.getElementById('greeting').innerText = hours < 12 ? "Good Morning! ☀️" : hours < 17 ? "Good Afternoon! ☕" : "Good Evening! 🌙";
     </script>
