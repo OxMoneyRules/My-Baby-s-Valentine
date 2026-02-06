@@ -5,44 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Baby ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100vh; margin: 0; background: #fff5f5; 
-            color: #d63384; font-family: sans-serif; overflow: hidden; text-align: center; padding: 20px; 
+            height: 100vh; margin: 0; 
+            background: linear-gradient(135deg, #fce4ec 0%, #ffebee 100%);
+            color: #880e4f; font-family: 'Quicksand', sans-serif; overflow: hidden; text-align: center; 
         }
-        .container { max-width: 500px; z-index: 10; background: white; padding: 40px; border-radius: 30px; box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1); }
-        h1 { font-size: 1.8rem; color: #c2185b; margin-bottom: 20px; }
-        .buttons { display: flex; gap: 20px; align-items: center; justify-content: center; margin-top: 30px; position: relative; height: 100px; }
         
-        button { padding: 12px 25px; font-size: 1.1rem; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; transition: transform 0.2s; }
+        /* Glassmorphism Card */
+        .container { 
+            max-width: 90%; width: 400px; z-index: 10; 
+            background: rgba(255, 255, 255, 0.4); 
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            padding: 40px 20px; border-radius: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; line-height: 1.4; }
+        p { font-size: 1.1rem; line-height: 1.6; font-weight: 500; }
+
+        .buttons { 
+            display: flex; gap: 15px; align-items: center; justify-content: center; 
+            margin-top: 30px; position: relative; height: 120px;
+        }
+        
+        button { 
+            padding: 14px 28px; font-size: 1rem; border: none; border-radius: 20px; 
+            cursor: pointer; font-weight: 700; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        }
+        
         #yesBtn { background: #ff4d6d; color: white; z-index: 1000; }
-        #noBtn { background: #f8bbd0; color: #ad1457; position: relative; transition: all 0.2s ease; }
+        #noBtn { background: white; color: #ff4d6d; position: relative; }
 
         .hidden { display: none; }
-        .emoji { font-size: 3rem; margin-bottom: 10px; }
+        .emoji { font-size: 3.5rem; margin-bottom: 15px; display: block; }
 
-        /* Gift Box Animation */
-        #gift-box { font-size: 5rem; cursor: pointer; display: inline-block; animation: shake 0.5s infinite; transition: transform 0.5s; }
-        @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg); }
-            50% { transform: rotate(0deg); }
-            75% { transform: rotate(-10deg); }
-            100% { transform: rotate(0deg); }
+        /* Smooth Gift Box */
+        #gift-box { font-size: 5rem; cursor: pointer; display: inline-block; transition: 0.3s; }
+        #gift-box:active { transform: scale(0.9); }
+
+        #giant-kiss { 
+            font-size: 12rem; position: fixed; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%) scale(0); 
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            z-index: 2000; pointer-events: none;
         }
+        #giant-kiss.show { transform: translate(-50%, -50%) scale(1); }
 
-        /* Giant Kiss Animation */
-        #giant-kiss { font-size: 10rem; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000; }
-        #giant-kiss.show { transform: translate(-50%, -50%) scale(1.5); }
+        /* Floating Background Shapes */
+        .shape { position: absolute; background: rgba(255, 77, 109, 0.1); border-radius: 50%; z-index: 1; animation: float 10s infinite; }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="step1"><h1>Hi My Babbyy… ❤️</h1><button onclick="nextStep(2)">Continue</button></div>
-        <div id="step2" class="hidden"><h1>Hiii My Baby Girl 🥰</h1><button onclick="nextStep(3)">Next</button></div>
-        <div id="step3" class="hidden"><h1>Hiii My Sexy Prettiest Baby Girl 🔥</h1><button onclick="nextStep(4)">Almost there...</button></div>
-        <div id="step4" class="hidden"><h1 id="greeting">Good Morning!</h1><button onclick="nextStep(5)">Open Letter 💌</button></div>
+    <div class="shape" style="width: 200px; height: 200px; top: -50px; left: -50px;"></div>
+    <div class="shape" style="width: 150px; height: 150px; bottom: -30px; right: -20px; animation-delay: 2s;"></div>
+
+    <div class="container" id="main-card">
+        <div id="step1">
+            <span class="emoji">✨</span>
+            <h1>Hi My Babbyy… ❤️</h1>
+            <button onclick="nextStep(2)">Continue</button>
+        </div>
+        
+        <div id="step2" class="hidden">
+            <span class="emoji">🎀</span>
+            <h1>Hiii My Baby Girl 🥰</h1>
+            <button onclick="nextStep(3)">Next</button>
+        </div>
+
+        <div id="step3" class="hidden">
+            <span class="emoji">🌸</span>
+            <h1>Hiii My Sexy Prettiest Baby Girl 🔥</h1>
+            <button onclick="nextStep(4)">Almost there...</button>
+        </div>
+
+        <div id="step4" class="hidden">
+            <span class="emoji">💌</span>
+            <h1 id="greeting">Good Morning!</h1>
+            <button onclick="nextStep(5)">Open Letter</button>
+        </div>
 
         <div id="final-step" class="hidden">
             <p>Every moment with you feels like a dream I never want to wake up from. Will you be my Valentine? 🌹</p>
@@ -55,11 +102,11 @@
         <div id="success-screen" class="hidden">
             <h1 id="success-text">YAY! ❤️</h1>
             <div id="gift-box" onclick="revealKiss()">🎁</div>
-            <p id="tap-instruction">Tap your gift!</p>
+            <p id="tap-instruction" style="font-size: 0.9rem; opacity: 0.7;">Tap your gift!</p>
         </div>
 
         <div id="final-message" class="hidden">
-            <h1 style="font-size: 1.5rem;">I love you so much,<br>I’m sorry about yesterday’s night. ❤️</h1>
+            <p style="font-size: 1.2rem; font-weight: 700;">I love you so much,<br>I’m sorry about yesterday’s night. ❤️</p>
         </div>
     </div>
 
@@ -77,12 +124,22 @@
 
         const handleNo = () => {
             noBtn.style.position = "absolute";
-            const x = Math.random() * (window.innerWidth * 0.6) - (window.innerWidth * 0.3);
-            const y = Math.random() * (window.innerHeight * 0.6) - (window.innerHeight * 0.3);
+            // Keeps it within the card/viewport better
+            const x = Math.random() * (window.innerWidth * 0.5) - (window.innerWidth * 0.25);
+            const y = Math.random() * (window.innerHeight * 0.5) - (window.innerHeight * 0.25);
             noBtn.style.transform = `translate(${x}px, ${y}px)`;
+            
             scale += 0.8;
             yesBtn.style.transform = `scale(${scale})`;
-            if (scale > 10) { Object.assign(yesBtn.style, { position:"fixed", inset:"0", width:"100%", height:"100%", borderRadius:"0", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"3rem", background:"#ff4d6d" }); yesBtn.innerText = "YES! ❤️"; }
+
+            if (scale > 10) {
+                Object.assign(yesBtn.style, { 
+                    position:"fixed", inset:"0", width:"100%", height:"100%", borderRadius:"0", 
+                    display:"flex", alignItems:"center", justifyContent:"center", 
+                    fontSize:"3rem", background:"#ff4d6d", zIndex: "5000"
+                });
+                yesBtn.innerText = "YES! ❤️";
+            }
         };
 
         noBtn.addEventListener('mouseover', handleNo);
@@ -91,24 +148,24 @@
         yesBtn.addEventListener('click', () => {
             document.getElementById('final-step').classList.add('hidden');
             document.getElementById('success-screen').classList.remove('hidden');
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ff8fa3', '#ffffff'] });
         });
 
         function revealKiss() {
-            // Show giant kiss
             const kiss = document.getElementById('giant-kiss');
             kiss.classList.add('show');
-            
-            // Hide gift box
-            document.getElementById('gift-box').style.display = 'none';
-            document.getElementById('tap-instruction').style.display = 'none';
-            document.getElementById('success-text').style.display = 'none';
+            document.getElementById('success-screen').classList.add('hidden');
 
             setTimeout(() => {
                 kiss.classList.remove('show');
-                document.getElementById('final-message').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('final-message').classList.remove('hidden');
+                }, 400);
             }, 2000);
         }
+        
+        const hours = new Date().getHours();
+        document.getElementById('greeting').innerText = hours < 12 ? "Good Morning! ☀️" : hours < 17 ? "Good Afternoon! ☕" : "Good Evening! 🌙";
     </script>
 </body>
 </html>
