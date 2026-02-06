@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Baby ❤️</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000;
+            color: #ff0000;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Canvas for the floating hearts background */
+        #heartCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container { max-width: 600px; z-index: 10; }
+        h1 { font-size: 2.2rem; text-shadow: 0 0 15px rgba(255, 0, 0, 0.7); line-height: 1.2; }
+        p { font-size: 1.3rem; line-height: 1.6; text-shadow: 0 0 5px rgba(255, 0, 0, 0.3); }
+
+        .buttons { 
+            display: flex; 
+            gap: 20px; 
+            align-items: center; 
+            justify-content: center;
+            margin-top: 30px; 
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: 2px solid #ff0000;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+            background: rgba(0,0,0,0.8);
+            color: #ff0000;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #ff0000;
+            color: #000000;
+            box-shadow: 0 0 20px #ff0000;
+        }
+
+        #yesBtn { z-index: 1000; }
+        #noBtn { position: absolute; transition: 0.1s; }
+
+        .hidden { display: none; }
+        .emoji { font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px red); }
+    </style>
+</head>
+<body>
+
+    <canvas id="heartCanvas"></canvas>
+
+    <div class="container">
+        <div id="step1">
+            <div class="emoji">❤️</div>
+            <h1>Hi My Babbyy…</h1>
+            <button onclick="nextStep(2)">Continue</button>
+        </div>
+
+        <div id="step2" class="hidden">
+            <div class="emoji">🥰</div>
+            <h1>Hiii My Baby Girl</h1>
+            <button onclick="nextStep(3)">Continue</button>
+        </div>
+
+        <div id="step3" class="hidden">
+            <div class="emoji">🌹</div>
+            <h1>Hiii My Sexy Prettiest Baby Girl</h1>
+            <button onclick="nextStep(4)">Continue</button>
+        </div>
+
+        <div id="step4" class="hidden">
+            <div class="emoji">✨</div>
+            <h1 id="greeting">Good Morning!</h1>
+            <button onclick="nextStep(5)">Continue</button>
+        </div>
+
+        <div id="final-step" class="hidden">
+            <p>
+                Every moment with you feels like a dream I never want to wake up from. 
+                You make everything brighter, and honestly, I can't imagine my world without you. 
+                So, I have a very important question to ask...
+            </p>
+            <h1>Will you be my Valentine?🌹</h1>
+            <div class="buttons">
+                <button id="yesBtn">YES</button>
+                <button id="noBtn">NO</button>
+            </div>
+        </div>
+
+        <div id="success-screen" class="hidden">
+            <div class="emoji">🔥❤️💍</div>
+            <h1>YAY! ❤️<br>See you on the 14th, My Queen!</h1>
+        </div>
+    </div>
+
+    <script>
+        // 1. DYNAMIC GREETING
+        const hours = new Date().getHours();
+        const greetingText = hours < 12 ? "Good Morning!" : hours < 17 ? "Good Afternoon!" : "Good Evening!";
+        document.getElementById('greeting').innerText = greetingText;
+
+        function nextStep(step) {
+            document.getElementById(`step${step-1}`).classList.add('hidden');
+            if(step === 5) {
+                document.getElementById('final-step').classList.remove('hidden');
+            } else {
+                document.getElementById(`step${step}`).classList.remove('hidden');
+            }
+        }
+
+        // 2. BUTTON LOGIC
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        let scale = 1;
+
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoButton(); });
+
+        function moveNoButton() {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+
+            scale += 0.5;
+            yesBtn.style.transform = `scale(${scale})`;
+            
+            if (scale > 12) {
+                yesBtn.style.position = "fixed";
+                yesBtn.style.inset = "0";
+                yesBtn.style.width = "100%";
+                yesBtn.style.height = "100%";
+                yesBtn.style.borderRadius = "0";
+                yesBtn.innerText = "CLICK YES ❤️";
+            }
+        }
+
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('final-step').classList.add('hidden');
+            noBtn.style.display = 'none';
+            document.getElementById('success-screen').classList.remove('hidden');
+        });
+
+        // 3. HEART ANIMATION BACKGROUND
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const hearts = [];
+        function createHeart() {
+            return {
+                x: Math.random() * canvas.width,
+                y: canvas.height + 20,
+                size: Math.random() * 15 + 5,
+                speed: Math.random() * 2 + 1,
+                opacity: Math.random() * 0.5 + 0.2
+            };
+        }
+
+        function drawHeart(heart) {
+            ctx.fillStyle = `rgba(255, 0, 0, ${heart.opacity})`;
+            ctx.beginPath();
+            ctx.moveTo(heart.x, heart.y);
+            ctx.bezierCurveTo(heart.x - heart.size/2, heart.y - heart.size/2, heart.x - heart.size, heart.y + heart.size/3, heart.x, heart.y + heart.size);
+            ctx.bezierCurveTo(heart.x + heart.size, heart.y + heart.size/3, heart.x + heart.size/2, heart.y - heart.size/2, heart.x, heart.y);
+            ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (hearts.length < 50) hearts.push(createHeart());
+            hearts.forEach((heart, index) => {
+                heart.y -= heart.speed;
+                drawHeart(heart);
+                if (heart.y < -20) hearts.splice(index, 1);
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
